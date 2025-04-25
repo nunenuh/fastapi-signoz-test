@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  webapi:
+    build:
+      context: ..
+      dockerfile: builder/docker-image/Dockerfile.main
+    image: nunenuh/fastapi-signoz-test:${VERSION:-latest}
