@@ -1,0 +1,1 @@
+OTEL_RESOURCE_ATTRIBUTES="service.name=fastapi-signoz-service,service.version=0.1.0,deployment.environment=development"

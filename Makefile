@@ -13,7 +13,7 @@ GREEN := \033[32m
 RED := \033[31m
 RESET := \033[0m
 
-.PHONY: help install test lint format clean run docker-build docker-run docker-stop kill-port celery-worker celery-flower test-celery dev-setup celery-stop version-last version-next
+.PHONY: help install test lint format clean run docker-build docker-run docker-stop kill-port celery-worker celery-flower test-celery dev-setup celery-stop version-last version-next run-instrumented
 
 # Default target
 help:
@@ -23,6 +23,7 @@ help:
 	@echo "$(GREEN)make lint-all$(RESET)   - Run linting checks"
 	@echo "$(GREEN)make clean$(RESET)      - Clean up temporary files"
 	@echo "$(GREEN)make run$(RESET)        - Run the FastAPI application"
+	@echo "$(GREEN)make run-instrumented$(RESET) - Run the app with OpenTelemetry auto-instrumentation"
 	@echo "$(GREEN)make docker-build$(RESET) - Build docker image"
 	@echo "$(GREEN)make docker-run$(RESET)  - Run with docker compose"
 	@echo "$(GREEN)make docker-stop$(RESET) - Stop docker compose"
@@ -65,6 +66,12 @@ clean:
 run: kill-port
 	@echo "$(BLUE)Running the FastAPI application...$(RESET)"
 	$(POETRY) run uvicorn src.fastapi_signoz_test.main:app --host $(HOST) --port $(PORT)
+
+# Run with OpenTelemetry auto-instrumentation
+run-instrumented: kill-port
+	@echo "$(BLUE)Running the FastAPI application with auto-instrumentation...$(RESET)"
+	$(POETRY) run opentelemetry-instrument uvicorn src.fastapi_signoz_test.main:app --host $(HOST) --port $(PORT) \
+		--log-level info
 
 # Docker login
 docker-login:

@@ -1,9 +1,8 @@
 """Configuration module for the application."""
 
-import json
-from typing import List, Optional, Union
+from typing import Dict, List
 
-from pydantic import Field, validator
+from pydantic import Field
 from pydantic_settings import BaseSettings
 
 # from .tracer import LangchainTracer
@@ -22,12 +21,12 @@ class Settings(BaseSettings):
     HOST: str = Field(default="0.0.0.0", env="HOST")
     PORT: int = Field(default=8081, env="PORT")
     
-        # CORS Configuration
+    # CORS Configuration
     BACKEND_CORS_ORIGINS: List[str] = Field(
         default=["http://localhost:3000", "http://localhost:8000"]
     )
     
-       # Environment Settings
+    # Environment Settings
     ENVIRONMENT: str = Field(default="dev", env="ENVIRONMENT")
     DEBUG: bool = Field(default=False, env="DEBUG")
 
@@ -40,6 +39,32 @@ class Settings(BaseSettings):
     OTEL_EXPORTER_OTLP_INSECURE: bool = Field(
         default=True,  # Set to False in production
         env="OTEL_EXPORTER_OTLP_INSECURE"
+    )
+    OTEL_SERVICE_NAME: str = Field(
+        default="fastapi-signoz-service",
+        env="OTEL_SERVICE_NAME"
+    )
+    OTEL_RESOURCE_ATTRIBUTES: Dict[str, str] = Field(
+        default={
+            "service.name": "fastapi-signoz-service",
+            "service.version": "0.1.0",
+            "deployment.environment": "dev",
+        }
+    )
+    OTEL_EXCLUDED_URLS: str = Field(
+        default="/health,/metrics,/docs,/openapi.json",
+        env="OTEL_EXCLUDED_URLS"
+    )
+    OTEL_TRACES_SAMPLER: str = Field(
+        default="always_on",
+        env="OTEL_TRACES_SAMPLER"
+    )
+    OTEL_INSTRUMENTED_LIBRARIES: List[str] = Field(
+        default=["fastapi", "requests", "logging", "httpx", "sqlalchemy"],
+    )
+    OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED: bool = Field(
+        default=True,
+        env="OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED"
     )
 
     class Config:

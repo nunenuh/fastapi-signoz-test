@@ -3,6 +3,8 @@ name = "fastapi-signoz-test"
 version = "0.1.0"
 description = "FastAPI SigNoz Integration"
 authors = ["Lalu Erfandi Maula Yusnu <nunenuh@gmail.com>"]
+readme = "README.md"
+packages = [{include = "fastapi_signoz_test", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -25,6 +27,9 @@ opentelemetry-instrumentation-requests = "^0.43b0"
 opentelemetry-exporter-otlp = "^1.22.0"
 opentelemetry-instrumentation-logging = "^0.43b0"
 opentelemetry-instrumentation-sqlalchemy = "^0.43b0"
+opentelemetry-distro = "^0.43b0"
+opentelemetry-instrumentation-httpx = "^0.43b0"
+opentelemetry-instrumentation = "^0.43b0"
 
 
 [tool.poetry.group.dev.dependencies]
